@@ -7,8 +7,9 @@ DONE:
 - karma ++/--
 - ~karma key
 - link display
+- actual IRC-ing
 
 TODO:
-- actual IRC-ing
+- plugin help commands
 - shared configuration
 - other features
