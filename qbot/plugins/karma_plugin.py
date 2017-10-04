@@ -2,11 +2,15 @@
 # -*- coding: utf-8 -*-
 
 from . import BasePlugin
+import logging
 import shelve
+
+logger = logging.getLogger(__name__)
 
 
 class KarmaPlugin(BasePlugin):
     def __init__(self, **kwargs):
+        logger.info('Creating karma plugin instance')
         self.filepath = './data/karma.db'
         self.regex_mappings = {
             r'(.*)\+\+\s*': self.plus_karma,
@@ -16,11 +20,13 @@ class KarmaPlugin(BasePlugin):
 
     def plus_karma(self, match):
         key = match.group(1)
+        logger.debug(f'Adding karma to {key}')
         val = self.update(key, 1)
         return f'[karma] {key} now has {val} karma'
 
     def min_karma(self, match):
         key = match.group(1)
+        logger.debug(f'Taking karma from {key}')
         val = self.update(key, -1)
         return f'[karma] {key} now has {val} karma'
 
@@ -34,5 +40,6 @@ class KarmaPlugin(BasePlugin):
 
     def karma(self, match):
         key = match.group(1)
+        logger.debug(f'Showing karma for {key}')
         val = self.update(key, 0)
         return f'[karma] {key} has {val} karma'
