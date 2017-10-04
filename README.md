@@ -8,6 +8,7 @@ DONE:
 - link display
 
 TODO:
+- actual IRC-ing
 - ~karma key
 - shared configuration
 - other features
