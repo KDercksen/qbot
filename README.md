@@ -3,15 +3,16 @@ qbot
 
 Light-weight Python 3.6 IRC bot. Extremely easy to extend.
 
-DONE:
-- karma ++/--
-- ~karma key
-- link display
-- actual IRC-ing
-- link to github on ~help
+### Installation
 
-TODO:
-- concise plugin help commands
-- some kind of wiki or generated doc based on docstrings for plugins
-- shared configuration
-- other features
+    git clone git@github.com:KDercksen/qbot && cd qbot
+    pip install -r requirements.txt
+    python setup.py install
+
+### Usage
+
+    qbot config.cfg
+
+or to test regex patterns:
+
+    qbot --dry 'sample input string'
