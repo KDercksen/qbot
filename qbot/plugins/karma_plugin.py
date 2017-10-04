@@ -9,6 +9,30 @@ logger = logging.getLogger(__name__)
 
 
 class KarmaPlugin(BasePlugin):
+    '''KarmaPlugin offers a set of commands to keep track of karma for certain
+    words/sentences.
+
+    Examples:
+        user | qbot++
+        qbot | [karma] qbot now has 1 karma
+
+        user | qbot--
+        qbot | [karma] qbot now has 0 karma
+
+        user | ~karma qbot
+        qbot | [karma] qbot has 0 karma
+
+    Available commands:
+        <string>++
+            add 1 karma to string
+
+        <string>--
+            take 1 karma from string
+
+        ~karma <string>
+            check current karma for string
+    '''
+
     def __init__(self, **kwargs):
         logger.info('Creating karma plugin instance')
         self.filepath = './data/karma.db'

@@ -10,6 +10,21 @@ logger = logging.getLogger(__name__)
 
 
 class LinksPlugin(BasePlugin):
+    '''LinksPlugin displays the titles of the webpages linked in the IRC
+    channel.
+
+    Examples:
+        user | https://google.com
+        qbot | [link] Google - https://google.com
+
+        user | check out this site: https://en.wikipedia.org/wiki/HTML
+        qbot | [link] HTML - Wikipedia - https://en.wikipedia.org/wiki/HTML
+
+    Matches all messages containing an URL starting with http(s). Currently
+    URLs without protocol (i.e. 'google.com' or 'www.google.com') are not
+    supported.
+    '''
+
     def __init__(self, **kwargs):
         logger.info('Creating links plugin instance')
         self.regex_mappings = {
