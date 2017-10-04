@@ -8,8 +8,10 @@ DONE:
 - ~karma key
 - link display
 - actual IRC-ing
+- link to github on ~help
 
 TODO:
-- plugin help commands
+- concise plugin help commands
+- some kind of wiki or generated doc based on docstrings for plugins
 - shared configuration
 - other features
