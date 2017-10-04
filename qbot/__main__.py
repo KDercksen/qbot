@@ -11,7 +11,8 @@ def match_line(line):
         m = re.match(pattern, line)
         if m:
             return func(m)
-    return 'I don\'t know what you mean :('
+    else:
+        return 'I don\'t understand :(' if re.match('~.*', line) else None
 
 
 def main():
@@ -19,7 +20,10 @@ def main():
     p.add_argument('line')
     p.add_argument('--version', action='version', version=f'qb {__version__}')
     args = p.parse_args()
-    print(match_line(args.line))
+
+    response = match_line(args.line)
+    if response:
+        print(response)
 
 
 if __name__ == '__main__':
