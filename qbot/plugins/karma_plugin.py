@@ -11,6 +11,7 @@ class KarmaPlugin(BasePlugin):
         self.regex_mappings = {
             r'(.*)\+\+\s*': self.plus_karma,
             r'(.*)--\s*': self.min_karma,
+            r'~karma\s+(.+)': self.karma,
         }
 
     def plus_karma(self, match):
@@ -24,8 +25,14 @@ class KarmaPlugin(BasePlugin):
         return f'[karma] {key} now has {val} karma'
 
     def update(self, key, val):
+        k = key.strip().lower()
         with shelve.open(self.filepath) as db:
-            if key not in db:
-                db[key] = 0
-            db[key] += val
-            return db[key]
+            if k not in db:
+                db[k] = 0
+            db[k] += val
+            return db[k]
+
+    def karma(self, match):
+        key = match.group(1)
+        val = self.update(key, 0)
+        return f'[karma] {key} has {val} karma'
