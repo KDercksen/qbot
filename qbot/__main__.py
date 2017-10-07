@@ -6,7 +6,9 @@ from argparse import ArgumentParser
 from configparser import ConfigParser
 import logging
 import re
+import signal
 import socket
+import sys
 
 
 logging.basicConfig(
@@ -41,6 +43,15 @@ def irc(servername, host, port, nick, ident, realname, channels):
     s.send(enc(f'JOIN {commachannels}'))
     for c in channels:
         s.send(enc(f'PRIVMSG {c} :Hello!'))
+
+    def graceful_exit(signum, frame):
+        s.send(enc(f'QUIT :Bot\'s gotta go! :)'))
+        s.close()
+        logger.info('Exiting!')
+        sys.exit(0)
+
+    # Register SIGINT handler
+    signal.signal(signal.SIGINT, graceful_exit)
 
     while True:
         readbuffer += s.recv(1024).decode('UTF-8')
