@@ -28,17 +28,19 @@ def match_line(line):
         return 'I don\'t understand :(' if re.match('~.*', line) else None
 
 
-def irc(servername, host, port, nick, ident, realname, channel):
+def irc(servername, host, port, nick, ident, realname, channels):
     def enc(msg):
         return bytes(f'{msg}\r\n', 'UTF-8')
 
     readbuffer = ''
+    commachannels = ','.join(channels)
     s = socket.socket()
     s.connect((host, port))
     s.send(enc(f'NICK {nick}'))
     s.send(enc(f'USER {ident} {host} {servername} :{realname}'))
-    s.send(enc(f'JOIN {channel}'))
-    s.send(enc(f'PRIVMSG {channel} :Hello!'))
+    s.send(enc(f'JOIN {commachannels}'))
+    for c in channels:
+        s.send(enc(f'PRIVMSG {c} :Hello!'))
 
     while True:
         readbuffer += s.recv(1024).decode('UTF-8')
@@ -91,7 +93,7 @@ def main():
             server['nick'],
             server['ident'],
             server['realname'],
-            server['channel'],
+            server['channels'].split(','),
         )
     else:
         logger.info('Running dry...')
