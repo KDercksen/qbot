@@ -12,11 +12,11 @@ class TroutPlugin(BasePlugin):
 
     Examples:
         user | ~trout otheruser
-        ---> | qbot slaps otheruser around a bit with a large trout
+        qbot | user slaps otheruser around a bit with a large trout
 
     Available commands:
         ~trout <string>
-            slap <string> with trout. <string> can be a user or any other
+            user slaps <string> with trout. <string> can be a user or any other
             single word
     '''
 
@@ -26,7 +26,7 @@ class TroutPlugin(BasePlugin):
             r'~trout\s(\w+).*': self.trout,
         }
 
-    def trout(self, match):
+    def trout(self, user, match):
         victim = match.group(1)
         logger.debug(f'Slapping {victim} with trout')
-        return f'ACTION slaps {victim} around a bit with a large trout'
+        return f'{user} slaps {victim} around a bit with a large trout'

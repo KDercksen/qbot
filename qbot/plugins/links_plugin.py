@@ -32,7 +32,7 @@ class LinksPlugin(BasePlugin):
                 '(?:%[0-9a-fA-F][0-9a-fA-F]))+).*?': self.link_title,
         }
 
-    def link_title(self, match):
+    def link_title(self, user, match):
         url = match.group(1)
         page = BeautifulSoup(urlopen(url), 'html.parser')
         title = page.title.string

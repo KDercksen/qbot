@@ -20,12 +20,12 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def match_line(line):
+def match_line(user, line):
     logger.debug(f'Matching line: {line}')
     for pattern, func in plugins_map.items():
         m = re.match(pattern, line)
         if m:
-            return func(m)
+            return func(user, m)
     else:
         return 'I don\'t understand :(' if re.match('~.*', line) else None
 
@@ -76,7 +76,7 @@ def irc(servername, host, port, nick, ident, realname, channels):
                 continue
             m = re.match(privmsg, ls)
             if m:
-                r = match_line(m.group(3))
+                r = match_line(m.group(1), m.group(3))
                 if r is not None:
                     response = f'PRIVMSG {m.group(2)} :{r}'
                     logger.debug(f'Respond to command: {response}')
@@ -109,7 +109,7 @@ def main():
         )
     else:
         logger.info('Running dry...')
-        response = match_line(args.config)
+        response = match_line('dry runner', args.config)
         logger.debug(f'Response for {args.config}: {response}')
         if response:
             print(response)

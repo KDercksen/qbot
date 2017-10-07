@@ -42,13 +42,13 @@ class KarmaPlugin(BasePlugin):
             r'~karma\s+(.+)': self.karma,
         }
 
-    def plus_karma(self, match):
+    def plus_karma(self, user, match):
         key = match.group(1)
         logger.debug(f'Adding karma to {key}')
         val = self.update(key, 1)
         return f'[karma] {key} now has {val} karma'
 
-    def min_karma(self, match):
+    def min_karma(self, user, match):
         key = match.group(1)
         logger.debug(f'Taking karma from {key}')
         val = self.update(key, -1)
@@ -62,7 +62,7 @@ class KarmaPlugin(BasePlugin):
             db[k] += val
             return db[k]
 
-    def karma(self, match):
+    def karma(self, user, match):
         key = match.group(1)
         logger.debug(f'Showing karma for {key}')
         val = self.update(key, 0)
