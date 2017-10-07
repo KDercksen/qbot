@@ -60,16 +60,17 @@ def irc(servername, host, port, nick, ident, realname, channels):
             m = re.match(pingpong, ls)
             if m:
                 response = f'PONG {m.group(1)}'
-                logger.debug(f'Respond: {response}')
+                logger.debug(f'Respond to PING: {response}')
                 s.send(enc(response))
                 continue
             m = re.match(privmsg, ls)
             if m:
                 r = match_line(m.group(3))
-                response = f'PRIVMSG {m.group(2)} :{r}'
-                logger.debug(f'Respond: {response}')
-                s.send(enc(response))
-                continue
+                if r is not None:
+                    response = f'PRIVMSG {m.group(2)} :{r}'
+                    logger.debug(f'Respond to command: {response}')
+                    s.send(enc(response))
+                    continue
 
 
 def main():
