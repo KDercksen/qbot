@@ -9,8 +9,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class LinksPlugin(BasePlugin):
-    '''LinksPlugin displays the titles of the webpages linked in the IRC
+class LinkPlugin(BasePlugin):
+    '''LinkPlugin displays the titles of the webpages linked in the IRC
     channel.
 
     Examples:
