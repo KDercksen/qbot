@@ -16,4 +16,4 @@ more information on what is possible.
 
 or to test regex patterns:
 
-    qbot --dry 'sample input string'
+    qbot --dry config.cfg 'sample input string'
