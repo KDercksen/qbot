@@ -52,6 +52,7 @@ class QuotePlugin(BasePlugin):
             fr'~qsearch\s+{keyisval}': self.quote_search,
             fr'~qrm\s+{keyisval}': self.quote_rm,
             fr'~qshow\s+(.*)': self.quote_show,
+            r'~help\s+quote\s*': self.help,
         }
 
     def quote_add(self, user, match):
@@ -107,3 +108,8 @@ class QuotePlugin(BasePlugin):
             num = len(db[key])
             s = 's' if num > 1 else ''
             return f'[quote] {key}: {quote} [{num} result{s}]'
+
+    def help(self, *args):
+        return '[quote] available commands: ~qadd <key>=<val>, ' \
+               '~qrm <key>=<val>, ~qshow <key>, ~qsearch <key>=<val> | ' \
+               'check plugin source code for more info (~help)'

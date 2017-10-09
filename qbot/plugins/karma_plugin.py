@@ -40,6 +40,7 @@ class KarmaPlugin(BasePlugin):
             r'(.*)\+\+\s*': self.plus_karma,
             r'(.*)--\s*': self.min_karma,
             r'~karma\s+(.+)': self.karma,
+            r'~help\s+karma\s*': self.help,
         }
 
     def plus_karma(self, user, match):
@@ -67,3 +68,7 @@ class KarmaPlugin(BasePlugin):
         logger.debug(f'Showing karma for {key}')
         val = self.update(key, 0)
         return f'[karma] {key} has {val} karma'
+
+    def help(self, *args):
+        return '[karma] \'something++\' or \'something--\' to add/subtract ' \
+               'karma; use \'~karma something\' to check current karma'

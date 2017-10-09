@@ -24,9 +24,13 @@ class TroutPlugin(BasePlugin):
         logger.info('Creating trout plugin instance')
         self.regex_mappings = {
             r'~trout\s(\w+).*': self.trout,
+            r'~help\s+trout\s*': self.help,
         }
 
     def trout(self, user, match):
         victim = match.group(1)
         logger.debug(f'Slapping {victim} with trout')
         return f'{user} slaps {victim} around a bit with a large trout'
+
+    def help(self, *args):
+        return '[trout] usage: ~trout username'

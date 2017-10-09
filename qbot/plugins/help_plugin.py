@@ -22,7 +22,7 @@ class HelpPlugin(BasePlugin):
     def __init__(self, **kwargs):
         logger.info('Creating help plugin instance')
         self.regex_mappings = {
-            r'~help.*': self.help_link,
+            r'~help\s*': self.help_link,
         }
 
     def help_link(self, *args):
