@@ -31,7 +31,7 @@ def load_config(*fname):
 def match_line(user, line, plugins_map):
     logger.debug(f'Matching line: {line}')
     for pattern, func in plugins_map.items():
-        m = re.match(pattern, line)
+        m = re.fullmatch(pattern, line)
         if m:
             return func(user, m)
     else:
