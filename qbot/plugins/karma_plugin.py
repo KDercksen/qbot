@@ -35,7 +35,7 @@ class KarmaPlugin(BasePlugin):
 
     def __init__(self, **kwargs):
         logger.info('Creating karma plugin instance')
-        self.filepath = './data/karma.db'
+        self.filepath = kwargs['karma']['filepath']
         self.regex_mappings = {
             r'(.*)\+\+\s*': self.plus_karma,
             r'(.*)--\s*': self.min_karma,

@@ -45,7 +45,7 @@ class QuotePlugin(BasePlugin):
 
     def __init__(self, **kwargs):
         logger.info('Creating quote plugin instance')
-        self.filepath = './data/quotes.db'
+        self.filepath = kwargs['quote']['filepath']
         keyisval = r'((?:\w+\s*?)+)\s*=\s*(.*)'
         self.regex_mappings = {
             fr'~qadd\s+{keyisval}': self.quote_add,

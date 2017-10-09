@@ -16,13 +16,10 @@ for m in glob('./qbot/plugins/*_plugin.py'):
     import_module(f'qbot.plugins.{module}')
 
 
-def collect_plugins():
+def collect_plugins(**kwargs):
     patterns = {}
     for c in BasePlugin.subclasses:
-        obj = c()
+        obj = c(**kwargs)
         patterns.update(obj.regex_mappings)
     logger.debug(f'Collected regex patterns: {patterns}')
     return patterns
-
-
-__all__ = [c.__name__ for c in BasePlugin.subclasses]

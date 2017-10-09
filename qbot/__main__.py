@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from . import plugins_map, __version__
+from . import __version__
+from .plugins import collect_plugins
 from argparse import ArgumentParser
 from configparser import ConfigParser
 import logging
@@ -20,7 +21,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def match_line(user, line):
+def load_config(*fname):
+    config = ConfigParser()
+    for f in fname:
+        config.read(f)
+    return config
+
+
+def match_line(user, line, plugins_map):
     logger.debug(f'Matching line: {line}')
     for pattern, func in plugins_map.items():
         m = re.match(pattern, line)
@@ -30,7 +38,7 @@ def match_line(user, line):
         return 'I don\'t understand :(' if re.match('~.*', line) else None
 
 
-def irc(servername, host, port, nick, ident, realname, channels):
+def irc(servername, host, port, nick, ident, realname, channels, plugins_map):
     def enc(msg):
         return bytes(f'{msg}\r\n', 'UTF-8')
 
@@ -76,7 +84,7 @@ def irc(servername, host, port, nick, ident, realname, channels):
                 continue
             m = re.match(privmsg, ls)
             if m:
-                r = match_line(m.group(1), m.group(3))
+                r = match_line(m.group(1), m.group(3), plugins_map)
                 if r is not None:
                     response = f'PRIVMSG {m.group(2)} :{r}'
                     logger.debug(f'Respond to command: {response}')
@@ -87,16 +95,20 @@ def irc(servername, host, port, nick, ident, realname, channels):
 def main():
     logger.info('Launched qbot')
     p = ArgumentParser()
-    p.add_argument('config', help='Config file (in dry run, '
-                                  'this argument should be a sample message')
+    p.add_argument('args', nargs='+', help='in dry mode: [config, line]; '
+                                           'otherwise just config')
     p.add_argument('--dry', action='store_true')
     p.add_argument('--version', action='version', version=f'qb {__version__}')
     args = p.parse_args()
     logger.debug(f'Parsed commandline arguments: {args}')
 
     if not args.dry:
-        config = ConfigParser()
-        config.read(args.config)
+        # Check args:
+        if len(args.args) > 1:
+            p.print_help()
+            sys.exit(0)
+        config = load_config(args.args[0])
+        plugins_map = collect_plugins(**config)
         server = config['server']
         irc(
             server['name'],
@@ -106,13 +118,22 @@ def main():
             server['ident'],
             server['realname'],
             server['channels'].split(','),
+            plugins_map,
         )
     else:
+        # Check args:
+        if len(args.args) != 2:
+            p.print_help()
+            sys.exit(0)
         logger.info('Running dry...')
-        response = match_line('dry runner', args.config)
-        logger.debug(f'Response for {args.config}: {response}')
+        config = load_config(args.args[0])
+        line = args.args[1]
+        plugins_map = collect_plugins(**config)
+        response = match_line('dry runner', line, plugins_map)
+        logger.debug(f'Response for {line}: {response}')
         if response:
             print(response)
+        sys.exit(0)
 
 
 if __name__ == '__main__':
