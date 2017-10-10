@@ -13,6 +13,10 @@ class QuotePlugin(BasePlugin):
     '''QuotePlugin offers a set of commands to add/search/remove quotes
     associated with specific topics.
 
+    Configurable values:
+        [quote]
+        filepath = /path/to/quote.db
+
     Examples:
         user | ~qadd topic=What do you think about QuotePlugin?
         qbot | [quote] quote added to 'topic'
@@ -41,6 +45,9 @@ class QuotePlugin(BasePlugin):
         ~qrm <key>=<quote>
             remove this quote from keys quotes; this only works when the quote
             is an exact match
+
+        ~help quote
+            display help text
     '''
 
     def __init__(self, **kwargs):

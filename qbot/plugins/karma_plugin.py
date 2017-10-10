@@ -12,6 +12,10 @@ class KarmaPlugin(BasePlugin):
     '''KarmaPlugin offers a set of commands to keep track of karma for certain
     words/sentences.
 
+    Configurable values:
+        [karma]
+        filepath = /path/to/karma.db
+
     Examples:
         user | qbot++
         qbot | [karma] qbot now has 1 karma
@@ -31,6 +35,9 @@ class KarmaPlugin(BasePlugin):
 
         ~karma <string>
             check current karma for string
+
+        ~help karma
+            display help text
     '''
 
     def __init__(self, **kwargs):

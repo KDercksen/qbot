@@ -18,6 +18,9 @@ class TroutPlugin(BasePlugin):
         ~trout <string>
             user slaps <string> with trout. <string> can be a user or any other
             single word
+
+        ~help trout
+            display help text
     '''
 
     def __init__(self, **kwargs):
