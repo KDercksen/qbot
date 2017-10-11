@@ -34,11 +34,13 @@ class LinkPlugin(BasePlugin):
 
     def link_title(self, user, match):
         url = match.group(1)
+        logger.debug(f'Showing link for URL {url}')
         response = urlopen(url)
-        if 'text/html' in response.getheader('Content-Type'):
+        ct = response.getheader('Content-Type')
+        logger.debug(f'Content-Type: {ct}')
+        if 'text/html' in ct:
             page = BeautifulSoup(response, 'html.parser')
             title = page.title.string
-            logger.debug(f'Showing title for URL {url} -- {title}')
             return f'[link] {title} - {url}'
         else:
             return f'[link] {url}'
