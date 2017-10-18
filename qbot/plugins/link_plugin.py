@@ -40,7 +40,10 @@ class LinkPlugin(BasePlugin):
         logger.debug(f'Content-Type: {ct}')
         if 'text/html' in ct:
             page = BeautifulSoup(response, 'html.parser')
-            title = page.title.string
-            return f'[link] {title} - {url}'
+            try:
+                title = page.title.string
+                return f'[link] {title} - {url}'
+            except AttributeError:
+                return f'[link] {url}'
         else:
             return f'[link] {url}'
