@@ -64,7 +64,7 @@ class UDPlugin(BasePlugin):
             t = response['result_type']
             return f'[ud] unexpected response type \'{t}\''
         except URLError as e:
-            logger.debug(f'Error querying UD: {e.message}')
+            logger.debug(f'Error querying UD: {e.reason}')
             return '[ud] could not connect to UD: API URL wrong or offline?'
 
     def help(self, *args):
