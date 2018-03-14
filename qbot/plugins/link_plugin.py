@@ -3,6 +3,7 @@
 
 from . import BasePlugin
 from bs4 import BeautifulSoup
+from urllib.error import URLError
 from urllib.request import urlopen
 import logging
 
@@ -35,15 +36,18 @@ class LinkPlugin(BasePlugin):
     def link_title(self, user, match):
         url = match.group(1)
         logger.debug(f'Showing link for URL {url}')
-        response = urlopen(url)
-        ct = response.getheader('Content-Type')
-        logger.debug(f'Content-Type: {ct}')
-        if 'text/html' in ct:
-            page = BeautifulSoup(response, 'html.parser')
-            try:
-                title = page.title.string
-                return f'[link] {title} - {url}'
-            except AttributeError:
+        try:
+            response = urlopen(url)
+            ct = response.getheader('Content-Type')
+            logger.debug(f'Content-Type: {ct}')
+            if 'text/html' in ct:
+                page = BeautifulSoup(response, 'html.parser')
+                try:
+                    title = page.title.string
+                    return f'[link] {title} - {url}'
+                except AttributeError:
+                    return f'[link] {url}'
+            else:
                 return f'[link] {url}'
-        else:
-            return f'[link] {url}'
+        except URLError as e:
+            return f'[link] invalid website'
