@@ -9,11 +9,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-for m in glob('./qbot/plugins/*_plugin.py'):
+for m in glob("./qbot/plugins/*_plugin.py"):
     # Get basename and chop off extension
     module = splitext(basename(m))[0]
-    logger.debug(f'Importing discovered module: {module}')
-    import_module(f'qbot.plugins.{module}')
+    logger.debug(f"Importing discovered module: {module}")
+    import_module(f"qbot.plugins.{module}")
 
 
 def collect_plugins(**kwargs):
@@ -21,5 +21,5 @@ def collect_plugins(**kwargs):
     for c in BasePlugin.subclasses:
         obj = c(**kwargs)
         patterns.update(obj.regex_mappings)
-    logger.debug(f'Collected regex patterns: {patterns}')
+    logger.debug(f"Collected regex patterns: {patterns}")
     return patterns

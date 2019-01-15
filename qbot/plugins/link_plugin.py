@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class LinkPlugin(BasePlugin):
-    '''LinkPlugin displays the titles of the webpages linked in the IRC
+    """LinkPlugin displays the titles of the webpages linked in the IRC
     channel.
 
     Examples:
@@ -24,30 +24,30 @@ class LinkPlugin(BasePlugin):
     Matches all messages containing an URL starting with http(s). Currently
     URLs without protocol (i.e. 'google.com' or 'www.google.com') are not
     supported.
-    '''
+    """
 
     def __init__(self, **kwargs):
-        logger.info('Creating links plugin instance')
+        logger.info("Creating links plugin instance")
         self.regex_mappings = {
-                r'.*?(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|'
-                '(?:%[0-9a-fA-F][0-9a-fA-F]))+).*?': self.link_title,
+            r".*?(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|"
+            "(?:%[0-9a-fA-F][0-9a-fA-F]))+).*?": self.link_title
         }
 
     def link_title(self, user, match):
         url = match.group(1)
-        logger.debug(f'Showing link for URL {url}')
+        logger.debug(f"Showing link for URL {url}")
         try:
             response = urlopen(url)
-            ct = response.getheader('Content-Type')
-            logger.debug(f'Content-Type: {ct}')
-            if 'text/html' in ct:
-                page = BeautifulSoup(response, 'html.parser')
+            ct = response.getheader("Content-Type")
+            logger.debug(f"Content-Type: {ct}")
+            if "text/html" in ct:
+                page = BeautifulSoup(response, "html.parser")
                 try:
                     title = page.title.string
-                    return f'[link] {title} - {url}'
+                    return f"[link] {title} - {url}"
                 except AttributeError:
-                    return f'[link] {url}'
+                    return f"[link] {url}"
             else:
-                return f'[link] {url}'
+                return f"[link] {url}"
         except URLError as e:
-            return f'[link] invalid website'
+            return f"[link] invalid website"
